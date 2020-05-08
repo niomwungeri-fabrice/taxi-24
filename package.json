@@ -4,11 +4,13 @@
   "description": "Taxi24 is a new startup based in Kigali. They would like to disrupt the taxi industry in Rwanda by providing a white-label solution to the existing taxi companies and hotels. Practically, they will build a set of APIs that other companies can use to manage their fleet of drivers and allocate drivers to passengers. They would like your help building these APIs",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_ENV=test jest --coverage",
+    "db:create": "node app/v1/database createTables",
+    "db:seed": "node app/v1/database seedDatabase",
+    "test": "NODE_ENV=test jest --coverage --forceExit",
     "clean": "rm -rf build && mkdir build",
     "build-server": "babel -d ./build ./app -s",
-    "build": "npm run clean && npm run build-server",
-    "start-dev": "NODE_ENV=development nodemon --exec babel-node app.js"
+    "build": "yarn run clean && yarn run build-server",
+    "start": "NODE_ENV=development nodemon --exec babel-node app.js"
   },
   "repository": {
     "type": "git",
@@ -38,11 +40,10 @@
     "eslint-plugin-prettier": "^3.1.3",
     "express": "^4.17.1",
     "express-list-endpoints": "^4.0.1",
+    "make-runnable": "^1.3.6",
     "pg": "^8.0.3",
     "pg-hstore": "^2.3.3",
     "prettier": "^2.0.5",
-    "sequelize": "^5.21.7",
-    "sequelize-cli": "^5.5.1",
     "supertest": "^4.0.2"
   },
   "devDependencies": {
