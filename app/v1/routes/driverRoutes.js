@@ -9,5 +9,9 @@ driver.get(
   "/drivers/available",
   errorHandler(DriverController.getAvailableDrivers)
 );
+driver.get(
+  "/drivers/available/range",
+  errorHandler(DriverController.getAvailableDriversWithInRange)
+);
 
 export default driver;
