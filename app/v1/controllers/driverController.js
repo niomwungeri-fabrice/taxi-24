@@ -5,4 +5,8 @@ export default class DriverController {
     const { rows } = await Driver.getAll();
     return res.status(200).json(rows);
   }
+  static async getAvailableDrivers(req, res) {
+    const { rows } = await Driver.getAvailableDrivers();
+    return res.status(200).json(rows);
+  }
 }

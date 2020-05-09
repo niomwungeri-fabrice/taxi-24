@@ -5,14 +5,15 @@ export default class Driver {
     this.names = names;
     this.phone = phone;
     this.email = email;
-    this.isAvailable = isAvailable,
-    this.location = location
+    this.isAvailable = isAvailable;
+    this.location = location;
   }
   static async getAll() {
     const queryString = "SELECT * FROM drivers";
     return await db.query(queryString);
   }
-  catch(error) {
-    return error;
+  static async getAvailableDrivers() {
+    const queryString = "SELECT * FROM drivers WHERE is_available=true";
+    return await db.query(queryString);
   }
 }
