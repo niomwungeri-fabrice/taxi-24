@@ -1,20 +1,22 @@
 import Driver from "../database/models/Driver";
 import { calculateDistance } from "../helpers/calculateDistance";
+import constants from "../helpers/constants";
+const { OK, BAD_REQUEST, NOT_FOUND } = constants.statusCode;
 export default class DriverController {
   static async getAllDrivers(req, res) {
     const { rows } = await Driver.getAll();
-    return res.status(200).json(rows);
+    return res.status(OK).json(rows);
   }
   static async getAvailableDrivers(req, res) {
     const { rows } = await Driver.getAvailableDrivers();
-    return res.status(200).json(rows);
+    return res.status(OK).json(rows);
   }
   static async getAvailableDriversWithInRange(req, res) {
     const { rows } = await Driver.getAvailableDrivers();
     const { myLocation, range } = req.query;
     if (!myLocation) {
       return res
-        .status(400)
+        .status(BAD_REQUEST)
         .json({ message: "myLocation is a query parameter field" });
     }
     const ridersLocation = myLocation.split(",");
@@ -31,6 +33,14 @@ export default class DriverController {
         driversWithInRange.push({ driver, driverRange: `${distance} KM` });
       }
     });
-    return res.status(200).json(driversWithInRange);
+    return res.status(OK).json(driversWithInRange);
+  }
+  static async findDriverById(req, res) {
+    const { id } = req.params;
+    const { rows } = await Driver.findByOne(id);
+    if (!rows[0]) {
+      return res.status(NOT_FOUND).send({ message: "Driver does not exist" });
+    }
+    return res.status(OK).json(rows[0]);
   }
 }
