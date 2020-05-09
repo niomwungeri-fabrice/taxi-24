@@ -8,10 +8,9 @@ export default class Rider {
   }
   static async getAll() {
     const queryString = "SELECT * FROM riders";
-    try {
-      return await db.query(queryString);
-    } catch (error) {
-      return error;
-    }
+    return await db.query(queryString);
+  }
+  catch(error) {
+    return error;
   }
 }

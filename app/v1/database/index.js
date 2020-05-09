@@ -12,7 +12,9 @@ const pool = new Pool({
 });
 
 pool.on("connect", () => {
-  console.log("connected to the db");
+  if (process.env.NODE_ENV !== "test") {
+    console.log("connected to the db");
+  }
 });
 
 const createTables = () => {
@@ -110,10 +112,12 @@ const seedDatabase = () => {
  * Drop Tables
  */
 const dropTables = () => {
-  const queryText = `DROP TABLE IF EXISTS drivers;
+  const queryText = `
+                    DROP TABLE IF EXISTS invoices;
+                    DROP TABLE IF EXISTS drivers;
                     DROP TABLE IF EXISTS riders; 
                     DROP TABLE IF EXISTS trips;
-                    DROP TABLE IF EXISTS invoices;`;
+                    `;
   pool
     .query(queryText)
     .then((res) => {
@@ -125,11 +129,6 @@ const dropTables = () => {
       pool.end();
     });
 };
-
-pool.on("remove", () => {
-  console.log("client removed");
-  process.exit(0);
-});
 
 const query = (text, params) => {
   return new Promise((resolve, reject) => {
@@ -143,6 +142,11 @@ const query = (text, params) => {
       });
   });
 };
+
+pool.on("remove", () => {
+  console.log("client removed");
+  process.exit(0);
+});
 
 module.exports = {
   createTables,
