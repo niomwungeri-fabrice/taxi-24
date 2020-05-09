@@ -6,11 +6,11 @@
   "scripts": {
     "db:create": "node app/v1/database createTables",
     "db:seed": "node app/v1/database seedDatabase",
-    "test": "NODE_ENV=test jest --coverage --forceExit",
+    "test": "NODE_ENV=test jest --testTimeout=10000 --coverage --verbose --detectOpenHandles --forceExit",
     "clean": "rm -rf build && mkdir build",
     "build-server": "babel -d ./build ./app -s",
     "build": "yarn run clean && yarn run build-server",
-    "start": "NODE_ENV=development nodemon --exec babel-node app.js"
+    "start": "NODE_ENV=development nodemon --exec babel-node index.js"
   },
   "repository": {
     "type": "git",
