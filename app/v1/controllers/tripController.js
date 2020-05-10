@@ -2,7 +2,7 @@ import Trip from "../database/models/Trip";
 import constants from "../helpers/constants";
 import Rider from "../database/models/Rider";
 import Driver from "../database/models/Driver";
-const { CREATED, NOT_FOUND } = constants.statusCode;
+const { CREATED, NOT_FOUND, OK } = constants.statusCode;
 export default class TripController {
   static async createTrip(req, res) {
     const { riderId, driverId } = req.body;
@@ -18,5 +18,10 @@ export default class TripController {
     return res
       .status(CREATED)
       .json({ message: "Trip created successfully", trip });
+  }
+
+  static async getActiveTrips(req, res) {
+    const { rows } = await Trip.getAllActive();
+    return res.status(OK).json(rows);
   }
 }

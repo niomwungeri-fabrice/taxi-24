@@ -7,4 +7,8 @@ export default class Trip {
             ($1, $2, $3, $4, false, $5, $6)`;
     return await db.query(queryString, Object.values(data));
   }
+  static async getAllActive() {
+    const queryString = "SELECT * FROM trips WHERE is_complete=true";
+    return await db.query(queryString);
+  }
 }

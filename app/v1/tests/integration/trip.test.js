@@ -33,4 +33,8 @@ describe("Trips", () => {
     expect(res.statusCode).toEqual(NOT_FOUND);
     expect(res.body.message).toEqual("Rider does not exist");
   });
+  it("should return all active trips", async () => {
+    const res = await request(app).get(defaultURL);
+    expect(res.statusCode).toEqual(OK);
+  });
 });
