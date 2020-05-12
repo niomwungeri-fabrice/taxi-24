@@ -1,5 +1,5 @@
 import Driver from "../database/models/Driver";
-import { calculateDistance } from "../helpers/calculateDistance";
+import { calculateDistance } from "../helpers/helpers";
 import constants from "../helpers/constants";
 const { OK, BAD_REQUEST, NOT_FOUND } = constants.statusCode;
 export default class DriverController {
@@ -17,7 +17,7 @@ export default class DriverController {
     if (!myLocation) {
       return res
         .status(BAD_REQUEST)
-        .json({ message: "myLocation is a query parameter field" });
+        .json({ message: "myLocation is a required parameter field" });
     }
     const ridersLocation = myLocation.split(",");
     let driversWithInRange = [];
@@ -29,7 +29,7 @@ export default class DriverController {
         ridersLocation[0],
         ridersLocation[1]
       ).toFixed(1);
-      if (distance <= (range | 3)) {
+      if (distance <= (range || 3)) {
         driversWithInRange.push({ driver, driverRange: `${distance} KM` });
       }
     });
