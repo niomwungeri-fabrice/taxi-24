@@ -1,0 +1,6 @@
+PG_USER=your_username
+PG_HOST=localhost
+PG_TEST_DATABASE=your_test_database
+PG_DEV_DATABASE=your_dev_database
+PG_PORT=database_port
+PG_PASSWORD=your_DATABASE_PASSWORD
