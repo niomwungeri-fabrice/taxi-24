@@ -1,40 +1,54 @@
 import request from "supertest";
 import app from "../../app";
 import constants from "../../helpers/constants";
-const { OK, NOT_FOUND } = constants.statusCode;
+const { OK, NOT_FOUND, CREATED, CONFLICT } = constants.statusCode;
 const defaultURL = "/api/v1/trips";
 
 describe("Trips", () => {
   const tripTestData = {
-    departure: "Kigali",
-    destination: "kanombe",
-    costAmount: 5000,
-    coordinates: "-1.956537,30.063616",
+    departure: "-1.956537,30.063616",
+    destination: "-1.956537,31.063616",
     riderId: 1,
     driverId: 2895,
   };
   it("should return driver not found", async () => {
     const res = await request(app).post(defaultURL).send(tripTestData);
     expect(res.statusCode).toEqual(NOT_FOUND);
-    expect(res.body.message).toEqual("Driver does not exist");
+    expect(res.body.message).toEqual("Driver with 2895 ID was not found");
   });
   it("should return rider not found", async () => {
     tripTestData["riderId"] = 489787;
     const res = await request(app).post(defaultURL).send(tripTestData);
     expect(res.statusCode).toEqual(NOT_FOUND);
-    expect(res.body.message).toEqual("Rider does not exist");
+    expect(res.body.message).toEqual("Rider with 489787 ID was not found");
   });
 
-  it.skip("should create a trip successfully ", async () => {
+  it("should create a trip successfully ", async () => {
     tripTestData["driverId"] = 2;
     tripTestData["riderId"] = 2;
     const res = await request(app).post(defaultURL).send(tripTestData);
-    console.log(res);
-    expect(res.statusCode).toEqual(NOT_FOUND);
-    expect(res.body.message).toEqual("Rider does not exist");
+    expect(res.statusCode).toEqual(CREATED);
+    expect(res.body.message).toEqual("Trip created successfully");
   });
   it("should return all active trips", async () => {
     const res = await request(app).get(defaultURL);
     expect(res.statusCode).toEqual(OK);
+  });
+});
+describe("Complete trip process", () => {
+  it("should return trip not found", async () => {
+    const res = await request(app).put(`${defaultURL}/385738/complete`);
+    expect(res.statusCode).toEqual(NOT_FOUND);
+    expect(res.body.message).toEqual("Trip with 385738 ID was not found");
+  });
+  test("should complete a trip successfully ", async () => {
+    const res = await request(app).put(`${defaultURL}/1/complete`);
+    expect(res.statusCode).toEqual(OK);
+    expect(res.body.message).toEqual("Trip completed successfully");
+  });
+  test("should return Trip already completed!", async () => {
+    const res = await request(app).put(`${defaultURL}/2/complete`);
+    expect(res.statusCode).toEqual(CONFLICT);
+    expect(res.body.message).toEqual("Trip already completed!");
   });
 });

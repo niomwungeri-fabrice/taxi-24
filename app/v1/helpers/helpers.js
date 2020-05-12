@@ -14,10 +14,10 @@ export const calculateDistance = (lat1, lon1, lat2, lon2) => {
     dist = (dist * 180) / Math.PI;
     dist = dist * 60 * 1.1515;
     dist = dist * 1.609344;
-    return dist;
+    return parseFloat(dist.toFixed(1));
   }
 };
-export const arraySorter = (myArray) =>{
+export const arraySorter = (myArray) => {
   return myArray.sort((a, b) => {
     if (a.distance < b.distance) {
       return -1;
@@ -27,4 +27,15 @@ export const arraySorter = (myArray) =>{
     }
     return 0;
   });
-}
+};
+
+export const getCoordinates = (from, to) => {
+  from = from.trim().split(",");
+  to = to.trim().split(",");
+  return {
+    lat1: from[0],
+    lon1: from[1],
+    lat2: to[0],
+    lon2: to[1],
+  };
+};
