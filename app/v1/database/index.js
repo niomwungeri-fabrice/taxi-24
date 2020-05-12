@@ -7,7 +7,10 @@ const pool = new Pool({
   user: process.env.PG_USER,
   host: process.env.PG_HOST,
   port: process.env.PG_PORT,
-  database: process.env.PG_DEV_DATABASE,
+  database:
+    process.env.NODE_ENV === "test"
+      ? process.env.PG_TEST_DATABASE
+      : process.env.PG_DEV_DATABASE,
   password: process.env.PG_PASSWORD,
 });
 
@@ -37,8 +40,6 @@ const createTables = () => {
         id SERIAL PRIMARY KEY,
         departure VARCHAR(25),
         destination VARCHAR(25),
-        coordinates VARCHAR(25),
-        cost_amount numeric,
         is_complete BOOLEAN,
         rider_id integer REFERENCES riders (id),
         driver_id integer REFERENCES drivers (id)
@@ -47,13 +48,14 @@ const createTables = () => {
         id SERIAL PRIMARY KEY,
         trip_id integer REFERENCES trips (id) ON DELETE CASCADE,
         rider_id integer REFERENCES riders (id) ON DELETE CASCADE,
-        driver_id integer REFERENCES drivers (id) ON DELETE CASCADE 
+        driver_id integer REFERENCES drivers (id) ON DELETE CASCADE,
+        cost numeric 
       );`;
 
   pool
     .query(queryText)
     .then((res) => {
-      console.log(res);
+      console.log("Tables are created!");
       pool.end();
     })
     .catch((err) => {
@@ -80,26 +82,26 @@ const seedDatabase = () => {
                      ('Maleek Berry', '0734895855', 'maleek.berry@email.com'),
                      ('Mike Kayehuri', '0769785498', 'mike.kayehura@email.com');
                    INSERT INTO trips
-                     (departure, destination, cost_amount, coordinates ,is_complete, rider_id, driver_id)
+                     (departure, destination ,is_complete, rider_id, driver_id)
                      VALUES
-                     ('Remera', 'Kagugu', 2000,'-1.956537,30.063616', false, 1, 3),
-                     ('Kimironko', 'Rebero', 2000,'-1.956537,30.063616', true, 2, 1),
-                     ('Nyabugogo', 'Nyanza', 3000,'-1.956537,30.063616', true, 3, 1),
-                     ('Kanombe', 'Kabuga', '5000','-1.956537,30.063616', false, 2, 2),
-                     ('Kicukiro', 'Gikondo', '1000','-1.956537,30.063616', false, 3, 3);
+                     ('-1.977940,30.043773', '-1.956537,30.063616', false, 1, 3),
+                     ('-1.978963,30.223335', '-1.956537,30.063616', true, 2, 1),
+                     ('-1.949549,30.126161', '-1.956537,30.063616', true, 3, 1),
+                     ('-1.971142,30.103683', '-1.956537,30.063616', false, 2, 2),
+                     ('-1.971142,30.103683', '-1.956537,30.063616', false, 3, 3);
                    INSERT INTO invoices
-                     (rider_id, driver_id, trip_id)
+                     (rider_id, driver_id, trip_id, cost)
                      VALUES
-                     (1, 1, 2),
-                     (1, 2, 4),
-                     (3, 1, 3),
-                     (4, 1, 1),
-                     (2, 1, 2);
+                     (1, 1, 2, 5000),
+                     (1, 2, 4, 6938),
+                     (3, 1, 3, 4903),
+                     (4, 1, 1, 9000),
+                     (2, 1, 2, 9038);
                    `;
   pool
     .query(queryText)
     .then((res) => {
-      console.log(res);
+      console.log("We have migrated dummy data!");
       pool.end();
     })
     .catch((err) => {
@@ -108,20 +110,17 @@ const seedDatabase = () => {
     });
 };
 
-/**
- * Drop Tables
- */
 const dropTables = () => {
   const queryText = `
                     DROP TABLE IF EXISTS invoices;
+                    DROP TABLE IF EXISTS trips;
                     DROP TABLE IF EXISTS drivers;
                     DROP TABLE IF EXISTS riders; 
-                    DROP TABLE IF EXISTS trips;
                     `;
   pool
     .query(queryText)
     .then((res) => {
-      console.log(res);
+      console.log("Tables are dropped!");
       pool.end();
     })
     .catch((err) => {
@@ -144,8 +143,10 @@ const query = (text, params) => {
 };
 
 pool.on("remove", () => {
-  console.log("client removed");
-  process.exit(0);
+  if (process.env.NODE_ENV !== "test") {
+    console.log("client disconnected!");
+  }
+  process.exit(0)
 });
 
 module.exports = {

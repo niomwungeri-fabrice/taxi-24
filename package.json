@@ -4,13 +4,15 @@
   "description": "Taxi24 is a new startup based in Kigali. They would like to disrupt the taxi industry in Rwanda by providing a white-label solution to the existing taxi companies and hotels. Practically, they will build a set of APIs that other companies can use to manage their fleet of drivers and allocate drivers to passengers. They would like your help building these APIs",
   "main": "index.js",
   "scripts": {
-    "db:create": "node app/v1/database createTables",
-    "db:seed": "node app/v1/database seedDatabase",
-    "test": "NODE_ENV=test jest --testTimeout=10000 --coverage --verbose --detectOpenHandles --forceExit",
+    "db:create": "node app/v1/database createTables && node app/v1/database seedDatabase",
+    "db:drop": "node app/v1/database dropTables",
+    "pretest": "NODE_ENV=test yarn run db:create",
+    "test": "jest --testTimeout=10000 --coverage --verbose --detectOpenHandles --forceExit",
+    "posttest": "NODE_ENV=test yarn run db:drop",
     "clean": "rm -rf build && mkdir build",
     "build-server": "babel -d ./build ./app -s",
     "build": "yarn run clean && yarn run build-server",
-    "start": "NODE_ENV=development nodemon --exec babel-node index.js"
+    "start": "nodemon --exec babel-node index.js"
   },
   "repository": {
     "type": "git",

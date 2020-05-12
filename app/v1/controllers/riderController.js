@@ -1,6 +1,10 @@
 import Rider from "../database/models/Rider";
 import constants from "../helpers/constants";
-import { calculateDistance, arraySorter } from "../helpers/helpers";
+import {
+  calculateDistance,
+  arraySorter,
+  getCoordinates,
+} from "../helpers/helpers";
 import Driver from "../database/models/Driver";
 
 const { OK, NOT_FOUND, BAD_REQUEST } = constants.statusCode;
@@ -28,14 +32,11 @@ export default class RiderControllers {
     }
     const driversDistance = [];
     rows.map((driver) => {
-      const driversLocation = driver.location.split(",");
-      const ridersLocation = myLocation.split(",");
-      const distance = calculateDistance(
-        ridersLocation[0],
-        ridersLocation[1],
-        driversLocation[0],
-        driversLocation[1]
+      const { lon1, lat1, lon2, lat2 } = getCoordinates(
+        myLocation,
+        driver.location
       );
+      const distance = calculateDistance(lon1, lat1, lon2, lat2);
       driver["distance"] = distance;
       driversDistance.push(driver);
     });
