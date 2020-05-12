@@ -12,8 +12,19 @@ export const calculateDistance = (lat1, lon1, lat2, lon2) => {
       Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
     dist = Math.acos(dist);
     dist = (dist * 180) / Math.PI;
-    dist = dist     * 60 * 1.1515;
+    dist = dist * 60 * 1.1515;
     dist = dist * 1.609344;
     return dist;
   }
 };
+export const arraySorter = (myArray) =>{
+  return myArray.sort((a, b) => {
+    if (a.distance < b.distance) {
+      return -1;
+    }
+    if (a.distance > b.distance) {
+      return 1;
+    }
+    return 0;
+  });
+}
