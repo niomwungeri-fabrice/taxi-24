@@ -1,6 +1,5 @@
 import startupDebugger from "debug";
-import app from "./app/v1/app";
-
+import app from "./v1/app";
 const port = process.env.PORT || 3000;
 
 const debug = startupDebugger("minutes:start");

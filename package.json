@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "db:create": "node app/v1/database createTables && node app/v1/database seedDatabase",
+    "db:seed": "node app/v1/database seedDatabase",
     "db:drop": "node app/v1/database dropTables",
     "pretest": "NODE_ENV=test yarn run db:create",
     "test": "jest --testTimeout=10000 --coverage --verbose --detectOpenHandles --forceExit",
@@ -12,7 +13,9 @@
     "clean": "rm -rf build && mkdir build",
     "build-server": "babel -d ./build ./app -s",
     "build": "yarn run clean && yarn run build-server",
-    "start": "nodemon --exec babel-node index.js"
+    "start-dev": "nodemon --exec babel-node ./app/index.js",
+    "prestart": "yarn run build && yarn run db:create",
+    "start": "run db:seed && NODE_ENV=production node ./build/index.js"
   },
   "repository": {
     "type": "git",

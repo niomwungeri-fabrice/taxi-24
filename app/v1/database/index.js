@@ -2,10 +2,21 @@ const { Pool } = require("pg");
 const dotenv = require("dotenv");
 
 dotenv.config();
-const connectionString =
-  process.env.NODE_ENV === "test"
-    ? process.env.TEST_DATABASE_URL
-    : process.env.DEV_DATABASE_URL;
+const setConnection = (environment) => {
+  let env;
+  switch (environment) {
+    case "test":
+      env = process.env.TEST_DATABASE_URL;
+      break;
+    case "development":
+      env = process.env.TEST_DATABASE_URL;
+    default:
+      env = process.env.DATABASE_URL;
+      break;
+  }
+  return env;
+};
+const connectionString = setConnection(process.env.NODE_ENV);
 
 const pool = new Pool({ connectionString });
 
