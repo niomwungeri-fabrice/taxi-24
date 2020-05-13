@@ -1,0 +1,52 @@
+name: Test suites
+on:
+  push:
+    branches:
+      - '**'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
+    services:
+      postgres:
+        image: postgres:10.8
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: tax24
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Restore/Cache node modules
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/package.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-build-${{ env.cache-name }}-
+            ${{ runner.OS }}-build-
+            ${{ runner.OS }}-
+      - name: Install project dependencies
+        run: npm install
+      - name: Run the database migrations
+        run: npm run db:create
+        env:
+          NODE_ENV: test
+          DATABASE_URL: postgres://postgres@localhost:${{ job.services.postgres.ports[5432] }}/tax24
+      - name: Run the test suites
+        run: npm test
+        env:
+          NODE_ENV: test
+          DATABASE_URL: postgres://postgres@localhost:${{ job.services.postgres.ports[5432] }}/tax24
+          GOOGLE_MAP_KEY: ${{ secrets.GOOGLE_MAP_KEY }}
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}

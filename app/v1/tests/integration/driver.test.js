@@ -17,7 +17,9 @@ describe("Drivers", () => {
   it("should return return 400 when my location not provided", async () => {
     const res = await request(app).get(`${defaultURL}/available/range`);
     expect(res.statusCode).toEqual(BAD_REQUEST);
-    expect(res.body.message).toEqual("myLocation is a required parameter field");
+    expect(res.body.message).toEqual(
+      "myLocation is a required parameter field"
+    );
   });
   it("should use default range", async () => {
     const res = await request(app).get(
@@ -31,7 +33,14 @@ describe("Drivers", () => {
       `${defaultURL}/available/range?myLocation=-1.956537,30.063616&range=18`
     );
     expect(res.statusCode).toEqual(OK);
-    expect(res.body.length).toBe(2);
+    expect(typeof res.body).toBe('object');
+  });
+  it("should use provided range range", async () => {
+    const res = await request(app).get(
+      `${defaultURL}/available/range?myLocation=-1.956537,31.063616`
+    );
+    expect(res.statusCode).toEqual(OK);
+    expect(res.body.message).toEqual("No drivers within 3 KM");
   });
   it("should return driver not found with fake id", async () => {
     const res = await request(app).get(`${defaultURL}/7834`);

@@ -32,6 +32,9 @@ Taxi24 is a new startup based in Kigali. They would like to disrupt the taxi ind
 | `GET api/v1/riders/{id}` | Get a specific rider by ID           |
 | `GET api/v1/riders/closest` | For a specific driver, get a list of the 3 closest drivers           |
 
+### API documentation
+https://documenter.getpostman.com/view/11352687/Szmh3cYp
+
 ### Project structure
 
 ```bash
