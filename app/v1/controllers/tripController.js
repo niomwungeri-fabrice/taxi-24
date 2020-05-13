@@ -1,8 +1,8 @@
-import Trip from "../database/models/Trip";
+import Trip from "../database/queries/Trip";
 import constants from "../helpers/constants";
 import { calculateDistance, getCoordinates } from "../helpers/helpers";
-import Driver from "../database/models/Driver";
-import Invoice from "../database/models/Invoice";
+import Driver from "../database/queries/Driver";
+import Invoice from "../database/queries/Invoice";
 const { CREATED, NOT_FOUND, OK, CONFLICT } = constants.statusCode;
 export default class TripController {
   static async createTrip(req, res) {

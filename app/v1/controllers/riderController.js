@@ -1,11 +1,11 @@
-import Rider from "../database/models/Rider";
+import Rider from "../database/queries/Rider";
 import constants from "../helpers/constants";
 import {
   calculateDistance,
   arraySorter,
   getCoordinates,
 } from "../helpers/helpers";
-import Driver from "../database/models/Driver";
+import Driver from "../database/queries/Driver";
 
 const { OK, NOT_FOUND, BAD_REQUEST } = constants.statusCode;
 export default class RiderControllers {
