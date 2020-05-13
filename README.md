@@ -1,3 +1,6 @@
+![Test suites](https://github.com/niomwungeri-fabrice/taxi-24/workflows/Test%20suites/badge.svg)
+[![Coverage Status](https://coveralls.io/repos/github/niomwungeri-fabrice/taxi-24/badge.svg?branch=docker-configurations)](https://coveralls.io/github/niomwungeri-fabrice/taxi-24?branch=docker-configurations)
+
 # taxi-24
 Taxi24 is a new startup based in Kigali. They would like to disrupt the taxi industry in Rwanda by providing a white-label solution to the existing taxi companies and hotels. Practically, they will build a set of APIs that other companies can use to manage their fleet of drivers and allocate drivers to passengers. They would like your help building these APIs
 
@@ -31,6 +34,11 @@ Taxi24 is a new startup based in Kigali. They would like to disrupt the taxi ind
 | `GET api/v1/riders`    | Get a list of all riders          |
 | `GET api/v1/riders/{id}` | Get a specific rider by ID           |
 | `GET api/v1/riders/closest` | For a specific driver, get a list of the 3 closest drivers           |
+
+### Bonus endpoints
+| EndPoint                     | Functionality             |
+| ---------------------------- | ------------------------- |
+| `GET api/v1/invoices`               | Get a list of all invoices         |
 
 ### API documentation
 https://documenter.getpostman.com/view/11352687/Szmh3cYp
