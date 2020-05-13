@@ -8,4 +8,7 @@ export default {
     CONFLICT: 409,
     INTERNAL_SERVER_ERROR: 500,
   },
+  price: {
+    PRICE_PER_KM: 700,
+  },
 };
