@@ -17,9 +17,7 @@ describe("Drivers", () => {
   it("should return return 400 when my location not provided", async () => {
     const res = await request(app).get(`${defaultURL}/available/range`);
     expect(res.statusCode).toEqual(BAD_REQUEST);
-    expect(res.body.message).toEqual(
-      "myLocation is a required parameter field"
-    );
+    expect(res.body.error).toEqual("myLocation is required");
   });
   it("should use default range", async () => {
     const res = await request(app).get(

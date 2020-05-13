@@ -5,20 +5,21 @@ const { OK, BAD_REQUEST, NOT_FOUND } = constants.statusCode;
 export default class DriverController {
   static async getAllDrivers(req, res) {
     const { rows } = await Driver.getAll();
-    return res.status(OK).json(rows);
+    return rows.length < 1
+      ? res.status(NOT_FOUND).json({
+          message: "No drivers found!",
+        })
+      : res.status(OK).json(rows);
   }
   static async getAvailableDrivers(req, res) {
     const { rows } = await Driver.getAvailableDrivers();
-    return res.status(OK).json(rows);
+    return rows.length < 1
+      ? res.status(NOT_FOUND).json({ message: "No available drivers!" })
+      : res.status(OK).json(rows);
   }
   static async getAvailableDriversWithInRange(req, res) {
     const { rows } = await Driver.getAvailableDrivers();
     const { myLocation, range } = req.query;
-    if (!myLocation) {
-      return res
-        .status(BAD_REQUEST)
-        .json({ message: "myLocation is a required parameter field" });
-    }
     const ridersLocation = myLocation.split(",");
     let driversWithInRange = [];
     rows.forEach((driver) => {

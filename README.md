@@ -34,14 +34,12 @@ Taxi24 is a new startup based in Kigali. They would like to disrupt the taxi ind
 | `GET api/v1/riders`    | Get a list of all riders          |
 | `GET api/v1/riders/{id}` | Get a specific rider by ID           |
 | `GET api/v1/riders/closest` | For a specific driver, get a list of the 3 closest drivers           |
-
-### Bonus endpoints
-| EndPoint                     | Functionality             |
-| ---------------------------- | ------------------------- |
 | `GET api/v1/invoices`               | Get a list of all invoices         |
+
 
 ### API documentation
 https://documenter.getpostman.com/view/11352687/Szmh3cYp
+
 
 ### Project structure
 
@@ -53,7 +51,7 @@ https://documenter.getpostman.com/view/11352687/Szmh3cYp
 │   │   │     ├── riderController.js
 │   │   │     ├── tripController.js
 │   │   ├── database
-│   │   │     ├── models
+│   │   │     ├── queries
 │   │   │     ├── index.js
 │   │   ├── helpers
 │   │   │     ├── constants.js
