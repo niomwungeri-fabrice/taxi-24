@@ -1,4 +1,4 @@
-import Driver from "../database/models/Driver";
+import Driver from "../database/queries/Driver";
 import { calculateDistance } from "../helpers/helpers";
 import constants from "../helpers/constants";
 const { OK, BAD_REQUEST, NOT_FOUND } = constants.statusCode;

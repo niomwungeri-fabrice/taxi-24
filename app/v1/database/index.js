@@ -142,13 +142,6 @@ const query = (text, params) => {
   });
 };
 
-pool.on("remove", () => {
-  if (process.env.NODE_ENV !== "test") {
-    console.log("client disconnected!");
-  }
-  process.exit(0)
-});
-
 module.exports = {
   createTables,
   dropTables,

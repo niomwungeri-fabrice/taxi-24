@@ -1,7 +1,7 @@
 import constants from "../helpers/constants";
-import Rider from "../database/models/Rider";
-import Driver from "../database/models/Driver";
-import Trip from "../database/models/Trip";
+import Rider from "../database/queries/Rider";
+import Driver from "../database/queries/Driver";
+import Trip from "../database/queries/Trip";
 const { NOT_FOUND } = constants.statusCode;
 export default class ModelValidator {
   static async validateDriver(req, res, next) {
