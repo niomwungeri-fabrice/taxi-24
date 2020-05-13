@@ -11,7 +11,11 @@ const { OK, NOT_FOUND, BAD_REQUEST } = constants.statusCode;
 export default class RiderControllers {
   static async getAllRiders(req, res) {
     const { rows } = await Rider.getAll();
-    return res.status(OK).json(rows);
+    return rows.length < 1
+      ? res.status(NOT_FOUND).json({
+          message: "No riders found!",
+        })
+      : res.status(OK).json(rows);
   }
   static async getRiderById(req, res) {
     const { id } = req.params;
@@ -25,11 +29,6 @@ export default class RiderControllers {
   static async getClosestDrivers(req, res) {
     const { rows } = await Driver.getAvailableDrivers();
     const { myLocation, threshold } = req.query;
-    if (!myLocation) {
-      return res
-        .status(BAD_REQUEST)
-        .json({ message: "myLocation is a required parameter field" });
-    }
     const driversDistance = [];
     rows.map((driver) => {
       const { lon1, lat1, lon2, lat2 } = getCoordinates(

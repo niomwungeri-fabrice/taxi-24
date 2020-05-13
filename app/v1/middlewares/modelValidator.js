@@ -26,12 +26,12 @@ export default class ModelValidator {
   }
   static async validateTrip(req, res, next) {
     const { tripId } = req.body;
-    const trip = await Trip.findByOne(tripId || req.params.tripId);
+    const trip = await Trip.findByOne(tripId || req.params.id);
     req.trip = trip;
     return trip.rows[0]
       ? next()
       : res.status(NOT_FOUND).json({
-          message: `Trip with ${tripId || req.params.tripId} ID was not found`,
+          message: `Trip with ${tripId || req.params.id} ID was not found`,
         });
   }
 }

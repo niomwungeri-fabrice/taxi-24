@@ -17,15 +17,19 @@ export default class TripController {
 
   static async getActiveTrips(req, res) {
     const { rows } = await Trip.getAllActive();
-    return res.status(OK).json(rows);
+    return rows.length < 1
+      ? res.status(NOT_FOUND).json({
+          message: "No trips found!",
+        })
+      : res.status(OK).json(rows);
   }
   static async completeTrip(req, res) {
-    const { tripId } = req.params;
+    const { id } = req.params;
     const { trip } = req;
     if (trip.rows[0].is_complete) {
       return res.status(CONFLICT).json({ message: "Trip already completed!" });
     }
-    const { rows } = await Trip.updateTrip(tripId);
+    const { rows } = await Trip.updateTrip(id);
 
     await Driver.updateDriver(true, rows[0].driver_id);
 
@@ -36,7 +40,7 @@ export default class TripController {
     const distance = calculateDistance(lat1, lon1, lat2, lon2);
 
     const invoice = await Invoice.create({
-      tripId,
+      tripId: id,
       riderId: rows[0].rider_id,
       driverId: rows[0].driver_id,
       cost: distance * PRICE_PER_KM,

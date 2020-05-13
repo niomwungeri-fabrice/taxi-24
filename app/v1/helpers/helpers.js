@@ -39,3 +39,5 @@ export const getCoordinates = (from, to) => {
     lon2: to[1],
   };
 };
+
+export const cleanJoiValidator = (error) => error.replace(/[^a-zA-Z ]/g, "");
