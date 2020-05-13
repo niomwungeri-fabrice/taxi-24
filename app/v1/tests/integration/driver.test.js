@@ -31,7 +31,7 @@ describe("Drivers", () => {
       `${defaultURL}/available/range?myLocation=-1.956537,30.063616&range=18`
     );
     expect(res.statusCode).toEqual(OK);
-    expect(res.body.length).toBe(2);
+    expect(res.body.length).toBe(4);
   });
   it("should return driver not found with fake id", async () => {
     const res = await request(app).get(`${defaultURL}/7834`);

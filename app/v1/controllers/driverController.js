@@ -28,12 +28,17 @@ export default class DriverController {
         location[1],
         ridersLocation[0],
         ridersLocation[1]
-      ).toFixed(1);
+      );
       if (distance <= (range || 3)) {
         driversWithInRange.push({ driver, driverRange: `${distance} KM` });
       }
     });
-    return res.status(OK).json(driversWithInRange);
+    return driversWithInRange.length < 1
+      ? res.json({
+          message: "No drivers within 3 KM",
+          options: "user <range> query parameter to increase the range",
+        })
+      : res.status(OK).json(driversWithInRange);
   }
   static async findDriverById(req, res) {
     const { id } = req.params;
