@@ -14,8 +14,8 @@
     "build-server": "babel -d ./build ./app -s",
     "build": "yarn run clean && yarn run build-server",
     "start-dev": "nodemon --exec babel-node ./app/index.js",
-    "prestart": "yarn run build && yarn run db:create",
-    "start": "run db:seed && NODE_ENV=production node ./build/index.js"
+    "prestart": "yarn run build",
+    "start": "yarn run db:seed && NODE_ENV=production node ./build/index.js"
   },
   "repository": {
     "type": "git",
