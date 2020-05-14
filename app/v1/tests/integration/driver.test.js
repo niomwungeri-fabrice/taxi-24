@@ -31,7 +31,7 @@ describe("Drivers", () => {
       `${defaultURL}/available/range?myLocation=-1.956537,30.063616&range=18`
     );
     expect(res.statusCode).toEqual(OK);
-    expect(typeof res.body).toBe('object');
+    expect(typeof res.body).toBe("object");
   });
   it("should use provided range range", async () => {
     const res = await request(app).get(
@@ -39,6 +39,13 @@ describe("Drivers", () => {
     );
     expect(res.statusCode).toEqual(OK);
     expect(res.body.message).toEqual("No drivers within 3 KM");
+  });
+  it("should return invalid coordinates", async () => {
+    const res = await request(app).get(
+      `${defaultURL}/available/range?myLocation=-1.956537,31.06361dfd6`
+    );
+    expect(res.statusCode).toEqual(BAD_REQUEST);
+    expect(res.body.error).toEqual("Invalid myLocation GPS coordinates");
   });
   it("should return driver not found with fake id", async () => {
     const res = await request(app).get(`${defaultURL}/7834`);

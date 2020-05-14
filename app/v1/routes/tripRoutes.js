@@ -2,7 +2,11 @@ import { Router } from "express";
 import TripController from "../controllers/tripController";
 import errorHandler from "../middlewares/errorHandler";
 import ModelValidator from "../middlewares/modelValidator";
-import { validateTrip, validateId } from "../middlewares/validators";
+import {
+  validateTrip,
+  validateId,
+  validateGPS,
+} from "../middlewares/validators";
 const trip = Router();
 
 trip.put(
@@ -14,6 +18,7 @@ trip.put(
 trip.post(
   "/trips",
   validateTrip,
+  validateGPS,
   ModelValidator.validateRider,
   ModelValidator.validateDriver,
   errorHandler(TripController.createTrip)

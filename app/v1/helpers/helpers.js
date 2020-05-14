@@ -29,15 +29,25 @@ export const arraySorter = (myArray) => {
   });
 };
 
-export const getCoordinates = (from, to) => {
-  from = from.trim().split(",");
-  to = to.trim().split(",");
+export const getCoordinates = (coords) => {
+  coords = coords.replace(" ", "").split(",");
   return {
-    lat1: from[0],
-    lon1: from[1],
-    lat2: to[0],
-    lon2: to[1],
+    lat: coords[0],
+    lon: coords[1],
   };
 };
 
 export const cleanJoiValidator = (error) => error.replace(/[^a-zA-Z ]/g, "");
+
+// function modified from https://stackoverflow.com/questions/11475146/javascript-regex-to-validate-gps-coordinates
+export const validateCoordinates = (lat, lon) => {
+  const ck_lat = /^(-?[1-8]?\d(?:\.\d{1,18})?|90(?:\.0{1,18})?)$/;
+  const ck_lon = /^(-?(?:1[0-7]|[1-9])?\d(?:\.\d{1,18})?|180(?:\.0{1,18})?)$/;
+  const validLat = ck_lat.test(lat);
+  const validLon = ck_lon.test(lon);
+  if (validLat && validLon) {
+    return true;
+  } else {
+    return false;
+  }
+};

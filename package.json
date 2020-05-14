@@ -13,9 +13,9 @@
     "clean": "rm -rf build && mkdir build",
     "build-server": "babel -d ./build ./app -s",
     "build": "yarn run clean && yarn run build-server",
-    "start-dev": "nodemon --exec babel-node ./app/index.js",
+    "start-dev": "nodemon --exec babel-node ./app/v1/index.js",
     "prestart": "yarn run build",
-    "start": "NODE_ENV=production node ./build/index.js"
+    "start": "NODE_ENV=production node ./build/v1/index.js"
   },
   "repository": {
     "type": "git",
