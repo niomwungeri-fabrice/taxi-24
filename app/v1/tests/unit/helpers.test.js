@@ -1,4 +1,10 @@
-import { calculateDistance, arraySorter } from "../../helpers/helpers";
+import {
+  calculateDistance,
+  arraySorter,
+  cleanJoiValidator,
+  getCoordinates,
+  validateCoordinates,
+} from "../../helpers/helpers";
 describe("calculateDistance()", () => {
   it("should return 0", () => {
     expect(
@@ -35,5 +41,31 @@ describe("arraySorter()", () => {
       { id: 2, name: "Michael Rogers", distance: 3 },
       { id: 1, name: "Angel Miguel", distance: 3 },
     ]);
+  });
+});
+
+describe("getCoordinates()", () => {
+  it("should return latitude and longitude separately", () => {
+    expect(getCoordinates("-1.956537, 31.063616")).toEqual({
+      lat: "-1.956537",
+      lon: "31.063616",
+    });
+  });
+});
+
+describe("cleanJoiValidator()", () => {
+  it("should remove special characters", () => {
+    expect(cleanJoiValidator("/myLocation/ is required")).toEqual(
+      "myLocation is required"
+    );
+  });
+});
+
+describe("validateCoordinates()", () => {
+  it("should return true", () => {
+    expect(validateCoordinates("-1.956537", "31.063616")).toEqual(true);
+  });
+  it("should return return false", () => {
+    expect(validateCoordinates("dfdfd", "dfdfd")).toEqual(false);
   });
 });

@@ -36,6 +36,19 @@ describe("Trips", () => {
     expect(res.statusCode).toEqual(BAD_REQUEST);
     expect(res.body.error).toEqual("departure is not allowed to be empty");
   });
+  it("should return invalid coordinates", async () => {
+    tripTestData["departure"] = "dfdafda";
+    const res = await request(app).post(defaultURL).send(tripTestData);
+    expect(res.statusCode).toEqual(BAD_REQUEST);
+    expect(res.body.error).toEqual("Invalid departure GPS coordinates");
+  });
+  it("should return invalid coordinates", async () => {
+    tripTestData["destination"] = "dfdafda";
+    tripTestData["departure"] = "-1.956537,30.063616";
+    const res = await request(app).post(defaultURL).send(tripTestData);
+    expect(res.statusCode).toEqual(BAD_REQUEST);
+    expect(res.body.error).toEqual("Invalid destination GPS coordinates");
+  });
   it("should return all active trips", async () => {
     const res = await request(app).get(defaultURL);
     expect(res.statusCode).toEqual(OK);
@@ -63,4 +76,3 @@ describe("Complete trip process", () => {
     expect(res.body.error).toEqual("id must be a number");
   });
 });
-

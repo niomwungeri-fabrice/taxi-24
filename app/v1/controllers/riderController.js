@@ -31,11 +31,9 @@ export default class RiderControllers {
     const { myLocation, threshold } = req.query;
     const driversDistance = [];
     rows.map((driver) => {
-      const { lon1, lat1, lon2, lat2 } = getCoordinates(
-        myLocation,
-        driver.location
-      );
-      const distance = calculateDistance(lon1, lat1, lon2, lat2);
+      const { lon: lon1, lat: lat1 } = getCoordinates(myLocation);
+      const { lon: lon2, lat: lat2 } = getCoordinates(driver.location);
+      const distance = calculateDistance(lat1, lon1, lat2, lon2);
       driver["distance"] = distance;
       driversDistance.push(driver);
     });

@@ -33,10 +33,9 @@ export default class TripController {
 
     await Driver.updateDriver(true, rows[0].driver_id);
 
-    const { lon1, lat1, lon2, lat2 } = getCoordinates(
-      rows[0].departure,
-      rows[0].destination
-    );
+    const { lon: lon1, lat: lat1 } = getCoordinates(rows[0].departure);
+    const { lon: lon2, lat: lat2 } = getCoordinates(rows[0].destination);
+
     const distance = calculateDistance(lat1, lon1, lat2, lon2);
 
     const invoice = await Invoice.create({
